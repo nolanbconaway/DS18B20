@@ -1,6 +1,6 @@
 # thermometer
 
-[![my badge](https://action-badges.now.sh/nolanbconaway/thermometer)](https://github.com/nolanbconaway/thermometer/actions)
+[![my badge](https://wdp9fww0r9.execute-api.us-west-2.amazonaws.com/production/badge/nolanbconaway/thermometer)](https://github.com/nolanbconaway/thermometer/actions)
 
 This is a python module for handling temperatures from my raspberry pi thermometer. This will be useful
 to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).

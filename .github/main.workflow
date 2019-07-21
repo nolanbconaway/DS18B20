@@ -6,7 +6,7 @@ workflow "Build" {
 }
 
 action "Install" {
-  args = "pip install --upgrade pip && pip install black pylint pydocstyle"
+  args = "pip install --upgrade pip && pip install .[test]"
   uses = "jefftriplett/python-actions@master"
 }
 

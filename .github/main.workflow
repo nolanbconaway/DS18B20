@@ -11,7 +11,7 @@ action "Install" {
 }
 
 action "Lint" {
-  args = "black thermometer/*.py --verbose && pydocstyle thermometer/*.py --verbose && pylint thermometer -d C0330 --verbose"
+  args = "black thermometer && pydocstyle thermometer && pylint thermometer -d C0330"
   uses = "jefftriplett/python-actions@master"
   needs = ["Install"]
 }

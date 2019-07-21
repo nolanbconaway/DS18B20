@@ -1,7 +1,7 @@
 workflow "Build" {
   on = "push"
   resolves = [
-    "Deploy",
+    "Lint",
   ]
 }
 

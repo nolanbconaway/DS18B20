@@ -1,3 +1,5 @@
+"""Set up the thermometer module."""
+
 from setuptools import find_packages, setup
 
 setup(

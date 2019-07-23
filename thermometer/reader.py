@@ -50,7 +50,7 @@ def get_temperature(
         # If we haven't got a valid response, wait for the WAIT_INTERVAL
         # (seconds) and try again.
         time.sleep(wait_interval)
-        lines = read_device_data()
+        lines = read_device_data(device)
 
     # Split out the raw temperature number
     temperature = lines[1].split("t=")[1]

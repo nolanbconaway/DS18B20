@@ -63,7 +63,7 @@ def get_temperature(
     return temperature_fahrenheit
 
 
-def _check_accept(
+def check_accept(
     degrees: float,
     reference: float,
     min_val: float = 40.0,
@@ -104,7 +104,7 @@ def get_temperature_strict(
     # except if it never passes tests
     for attempt in range(1, attempts + 1):
         reference = get_temperature(device)
-        if _check_accept(temperature_fahrenheit, reference):
+        if check_accept(temperature_fahrenheit, reference):
             break
         elif attempt == attempts:
             raise RuntimeError("Unable to obtain consistent valid readings.")

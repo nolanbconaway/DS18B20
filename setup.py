@@ -3,7 +3,7 @@ import sys
 
 from setuptools import setup
 
-TEST_DEPS = ["pylint", "pydocstyle", "pytest"]
+TEST_DEPS = ["pylint", "pydocstyle", "pytest", "pytest-cov", "codecov"]
 
 assert sys.version_info.major > 2, "This package is not python 2 compatible!"
 

@@ -35,7 +35,7 @@ jobs:
         run: pytest test.py --verbose --cov=./ --cov-report=xml
 
       - name: Check that the temperature CLT is installed
-        run: which temperature
+        run: command -v temperature
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.2

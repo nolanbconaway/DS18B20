@@ -30,8 +30,11 @@ jobs:
       - name: Check Import Sorting with isort
         run: isort thermometer --check-only --verbose --recursive
 
-      - name: Lint with Black
-        run: black ./thermometer/ ./test/ --check --verbose
+      - name: Lint with Black if Python 3.6
+        if: matrix.python-version == 3.6
+        run: |
+          pip install black
+          black ./thermometer/ ./test/ --check --verbose
 
       - name: Run unit tests with Pytest
         run: pytest --verbose

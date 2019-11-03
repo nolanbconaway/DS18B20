@@ -32,14 +32,14 @@ parser.add_argument(
 parser.add_argument(
     "--device-folder",
     type=Path,
-    help="Path to the system bus devices. Used as kwarg to ``find_device``. "
+    help="Optional path to the system bus devices. Used as kwarg to ``find_device``. "
     + "Ignored if device is provided.",
 )
 
 parser.add_argument(
     "--device-suffix",
     type=Path,
-    help="Suffix of slave file found within the device folde. "
+    help="Optional suffix of slave file found within the device folde. "
     + "Used as kwarg to ``find_device``. Ignored if device is provided.",
 )
 

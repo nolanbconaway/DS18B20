@@ -85,7 +85,7 @@ def temperature(
     :param device: Path to the device. If not provided, ``find_device()`` is used.
     :param unit: Unit of temperature to return, either F or C. Default F.
     :param retries: Number of times to retry reading on failure, with 0.05 second 
-    timeout between attempts. Default 20.
+    timeout between attempts. Set to -1 for infinite. Default 20.
     :return: Temperature in unit specified by the user.
     """
     attempts = 0

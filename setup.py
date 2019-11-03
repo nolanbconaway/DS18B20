@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="thermometer",
-    version="0.1",
+    version="0.2",
     packages=find_packages(),
     python_requires=">=3.5",
     extras_require={"test": ["black", "pylint", "pydocstyle", "pytest"]},

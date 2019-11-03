@@ -15,6 +15,6 @@ setup(
     version="0.2",
     packages=["thermometer"],
     python_requires=">=3.5",
-    extras_require={"test": ["pylint", "pydocstyle", "pytest"]},
+    extras_require={"test": TEST_DEPS},
     entry_points={"console_scripts": ["temperature=thermometer.cli:main"]},
 )

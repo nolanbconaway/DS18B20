@@ -1,17 +1,30 @@
 # thermometer
 
-[![my badge](https://action-badges.now.sh/nolanbconaway/thermometer)](https://github.com/nolanbconaway/thermometer/actions)
+[![badge](https://github.com/nolanbconaway/thermometer/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/thermometer/actions)
 
-This is a python module for handling temperatures from my raspberry pi thermometer. This will be useful
-to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).
+This is a python (3.5+) module for reading temperatures from a raspberry pi thermometer. This will be useful to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).
 
-You can find a website showing my apartment's current temperature [here](https://temp-in-nolans-apartment.herokuapp.com/).
+## Install
 
-It is principally a bus reader to convert raw text from the thermometer device to a float value
-specifying degrees Fahrenheit. It also has command line tools to:
+After you've installed your python 3.5+ environment with pip, run:
 
-1. print the current temp to the console.
-2. save the current temp to a database.
+``` sh
+pip3 install git+https://github.com/nolanbconaway/thermometer.git
+```
 
-I am able to hold all the complexity in my head and the whole thing is basically integration code
-(bus reader, database code, etc), so there are no tests. Sorry.
+## Python API
+
+Usually you just want to know what the temperature reading is. Do:
+
+``` python
+import thermometer
+
+temp_f = thermometer.temperature()
+
+# or
+
+temp_c = thermometer.temperature(unit='C')
+```
+
+Under the hood, `thermometer` identified your thermometer device, then parsed and validated its output.
+

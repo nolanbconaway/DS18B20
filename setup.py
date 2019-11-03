@@ -7,6 +7,6 @@ setup(
     version="0.1",
     packages=find_packages(),
     python_requires=">=3.5",
-    install_requires=["sqlalchemy", "python-dotenv"],
-    extras_require={"test": ["black", "pylint", "pydocstyle"]},
+    extras_require={"test": ["black", "pylint", "pydocstyle", "pytest"]},
+    entry_points={"console_scripts": ["temperature=thermometer.cli:main"]},
 )

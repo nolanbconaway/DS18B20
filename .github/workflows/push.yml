@@ -1,0 +1,37 @@
+name: Main Workflow
+
+on: push
+
+jobs:
+  build:
+    name: Lint and Test
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8]
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install .[test]
+
+      - name: Check Documentation with Pydocstyle
+        run: pydocstyle thermometer/* test/* --verbose
+
+      - name: Check Import Sorting with isort
+        run: isort thermometer --check-only --verbose --recursive
+
+      - name: Lint with Black
+        run: black ./thermometer/ ./test/ --check --verbose
+
+      - name: Run unit tests with Pytest
+        run: pytest --verbose

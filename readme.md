@@ -2,7 +2,7 @@
 
 [![badge](https://github.com/nolanbconaway/thermometer/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/thermometer/actions)
 
-This is a python module for reading temperatures from a raspberry pi thermometer. It has been tested on python 3.5+ and has zero dependencies.
+This is a python module for reading temperatures from a raspberry pi thermometer. It is tested on python 3.5-3.8 and has zero dependencies.
 
 This will be useful to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).
 
@@ -56,12 +56,11 @@ optional arguments:
                         Number of read attempts (in case data are not as
                         expected). Default 20.
   --device-folder DEVICE_FOLDER
-                        Path to the system bus devices. Used as kwarg to
-` ` find_device ` ` . Ignored if device is provided.
+                        Path to the system bus devices. Used as kwarg to find_device().
+                        Ignored if device is provided.
   --device-suffix DEVICE_SUFFIX
                         Suffix of slave file found within the device folde.
-                        Used as kwarg to ` ` find_device ` ` . Ignored if device is
-                        provided.
+                        Used as kwarg to find_device(). Ignored if device is provided.
 ```
 
 This can be useful for one-liners to record the temperature in e.g., a cron job--

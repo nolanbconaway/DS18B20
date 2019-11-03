@@ -1,7 +1,7 @@
 # thermometer
 
 [![badge](https://github.com/nolanbconaway/thermometer/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/thermometer/actions)
-[![codecov](https://codecov.io/gh/nolanbconaway/thermometer/branch/master/graph/badge.svg)](https://codecov.io/gh/nolanbconaway/thermometer)".
+[![codecov](https://codecov.io/gh/nolanbconaway/thermometer/branch/master/graph/badge.svg)](https://codecov.io/gh/nolanbconaway/thermometer)
 
 This is a python module for reading temperatures from a raspberry pi thermometer. It is tested on python 3.5-3.8 and has zero dependencies.
 

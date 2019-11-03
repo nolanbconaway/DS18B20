@@ -35,4 +35,4 @@ jobs:
         run: black ./thermometer/ ./test/ --check --verbose
 
       - name: Run unit tests with Pytest
-        run: pytest --verbose
+        run: pytest test.py --verbose

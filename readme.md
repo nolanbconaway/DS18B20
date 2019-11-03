@@ -1,17 +1,78 @@
 # thermometer
 
-[![my badge](https://action-badges.now.sh/nolanbconaway/thermometer)](https://github.com/nolanbconaway/thermometer/actions)
+[![badge](https://github.com/nolanbconaway/thermometer/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/thermometer/actions)
+[![codecov](https://codecov.io/gh/nolanbconaway/thermometer/branch/master/graph/badge.svg)](https://codecov.io/gh/nolanbconaway/thermometer)".
 
-This is a python module for handling temperatures from my raspberry pi thermometer. This will be useful
-to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).
+This is a python module for reading temperatures from a raspberry pi thermometer. It is tested on python 3.5-3.8 and has zero dependencies.
 
-You can find a website showing my apartment's current temperature [here](https://temp-in-nolans-apartment.herokuapp.com/).
+This will be useful to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).
 
-It is principally a bus reader to convert raw text from the thermometer device to a float value
-specifying degrees Fahrenheit. It also has command line tools to:
+## Install
 
-1. print the current temp to the console.
-2. save the current temp to a database.
+After you've installed your python 3.5+ environment with pip, run:
 
-I am able to hold all the complexity in my head and the whole thing is basically integration code
-(bus reader, database code, etc), so there are no tests. Sorry.
+``` sh
+pip3 install git+https://github.com/nolanbconaway/thermometer.git
+```
+
+## Python API
+
+Usually you just want to know what the temperature reading is. Do:
+
+``` python
+import thermometer
+
+temp_f = thermometer.temperature()
+
+# or
+
+temp_c = thermometer.temperature(unit='C')
+```
+
+Under the hood, `thermometer` identified your thermometer device, then parsed and validated its output.
+
+## CLI
+
+The `temperature` command line tool is also installed. Use it like:
+
+``` txt
+$ temperature
+70.36160000000001
+
+$ temperature -h
+usage: temperature [-h] [-u {F,C}] [-d DEVICE] [-r RETRIES]
+                   [--device-folder DEVICE_FOLDER]
+                   [--device-suffix DEVICE_SUFFIX]
+
+Print the current temperature.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u {F,C}, --unit {F,C}
+                        Celsius or Fahrenheit choice. Default Fahrenheit.
+  -d DEVICE, --device DEVICE
+                        Optional path to the thermometer device. Will attempt
+                        to find it if not provided.
+  -r RETRIES, --retries RETRIES
+                        Number of read attempts (in case data are not as
+                        expected). Default 20.
+  --device-folder DEVICE_FOLDER
+                        Path to the system bus devices. Used as kwarg to find_device().
+                        Ignored if device is provided.
+  --device-suffix DEVICE_SUFFIX
+                        Suffix of slave file found within the device folde.
+                        Used as kwarg to find_device(). Ignored if device is provided.
+```
+
+This can be useful for one-liners to record the temperature in e.g., a cron job--
+
+``` sh
+$ echo $(date) ',' $(temperature --unit C) >> temps.csv
+```
+
+A more practical example: I run a cron job to record the temperature every minute and store the result in my postgres database. Here is that cron:
+
+``` sh
+DEGREES=$(temperature) && psql -c "insert into temperatures (fahrenheit) values ($DEGREES);" > /dev/null
+```
+

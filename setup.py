@@ -1,12 +1,20 @@
 """Set up the thermometer module."""
+import sys
 
-from setuptools import find_packages, setup
+from setuptools import setup
+
+TEST_DEPS = ["pylint", "pydocstyle", "pytest", "pytest-cov", "codecov"]
+
+assert sys.version_info.major > 2, "This package is not python 2 compatible!"
+
+if sys.version_info.minor > 5:
+    TEST_DEPS.append("black")
 
 setup(
     name="thermometer",
-    version="0.1",
-    packages=find_packages(),
+    version="0.2",
+    packages=["thermometer"],
     python_requires=">=3.5",
-    install_requires=["sqlalchemy", "python-dotenv"],
-    extras_require={"test": ["black", "pylint", "pydocstyle"]},
+    extras_require={"test": TEST_DEPS},
+    entry_points={"console_scripts": ["temperature=thermometer.cli:main"]},
 )

@@ -73,4 +73,3 @@ def test_temperature_invalid_data(monkeypatch):
     monkeypatch.setattr(Path, "read_text", lambda *x: "")
     with pytest.raises(thermometer.UnexpectedDeviceData):
         thermometer.temperature(Path("device"), retries=0)
-

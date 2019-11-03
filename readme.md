@@ -70,3 +70,9 @@ This can be useful for one-liners to record the temperature in e.g., a cron job-
 $ echo $(date) ',' $(temperature --unit C) >> temps.csv
 ```
 
+A more practical example: I run a cron job to record the temperature every minute and store the result in my postgres database. Here is that cron:
+
+``` sh
+DEGREES=$(temperature) && psql -c "insert into temperatures (fahrenheit) values ($DEGREES);" > /dev/null
+```
+

@@ -113,7 +113,7 @@ def temperature_strict(
     unit: str = "F",
     retries: int = 20,
     max_delta: float = 1,
-    **find_device_kw,
+    **find_device_kw
 ):
     """Read the temperature off of a device strictly.
 

@@ -108,4 +108,4 @@ def test_cli(monkeypatch):
     )
     monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)
 
-    res = cli.main()
+    assert cli.main() == 0

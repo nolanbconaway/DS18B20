@@ -43,12 +43,12 @@ parser.add_argument(
     + "Used as kwarg to ``find_device``. Ignored if device is provided.",
 )
 parser.add_argument(
-    "--no-strict", action="store_true", help="Turn off the stict reading handler."
+    "--no-strict", action="store_true", help="Turn off the strict reading handler."
 )
 parser.add_argument(
     "--max-delta",
     type=float,
-    help="Option for maximum delta bertween consecutive readings. "
+    help="Option for maximum delta between consecutive readings. "
     + "Ignored if --no-strict.",
 )
 

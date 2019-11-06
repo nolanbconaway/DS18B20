@@ -48,7 +48,7 @@ parser.add_argument(
 parser.add_argument(
     "--max-delta",
     type=float,
-    help="Option for maximum delta bertween consecutive readings. "
+    help="Option for maximum delta between consecutive readings. "
     + "Ignored if --no-strict.",
 )
 

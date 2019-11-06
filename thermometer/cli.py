@@ -39,8 +39,11 @@ parser.add_argument(
 parser.add_argument(
     "--device-suffix",
     type=Path,
-    help="Optional suffix of slave file found within the device folde. "
+    help="Optional suffix of slave file found within the device folder. "
     + "Used as kwarg to ``find_device``. Ignored if device is provided.",
+)
+parser.add_argument(
+    "--nostrict", action="store_true", help="Turn off the stict reading handler."
 )
 
 
@@ -48,7 +51,9 @@ def main():
     """Print the temperature to the console."""
     args = parser.parse_args()
     kwargs = {k: v for k, v in vars(args).items() if v is not None}
-    temp = thermometer.temperature(**kwargs)
+
+    f = thermometer.temperature if args.nostrict else thermometer.temperature_strict
+    temp = f(**kwargs)
     print(temp)
 
 

@@ -69,8 +69,10 @@ def main():
     f = thermometer.temperature if args.no_strict else thermometer.temperature_strict
 
     temp = f(**kwargs)
+
+    print(temp)
     return temp
 
 
 if __name__ == "__main__":
-    print(main())
+    main()

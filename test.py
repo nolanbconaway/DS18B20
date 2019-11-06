@@ -77,6 +77,13 @@ def test_temperature_invalid_data(monkeypatch):
 
 def test_temperature_strict(monkeypatch):
     """Test that the correct temperature is returned with valid data."""
-    data = "58 01 4b 46 7f ff 08 10 f9 : crc=f9 YES\n58 01 4b 46 7f ff 08 10 f9 t=0"
-    monkeypatch.setattr(Path, "read_text", lambda *x: data)
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)
     assert thermometer.temperature_strict(Path("device"), unit="C") == 0
+
+
+def test_temperature_strict_variable(monkeypatch):
+    """Test that an exception is raised if a variable temperature is read."""
+    L = [0, 1, 0, 1, 0, 1]
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: L.pop())
+    with pytest.raises(thermometer.InconsistentTemperature):
+        thermometer.temperature_strict(retries=1)

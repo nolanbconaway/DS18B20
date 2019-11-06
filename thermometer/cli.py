@@ -39,18 +39,38 @@ parser.add_argument(
 parser.add_argument(
     "--device-suffix",
     type=Path,
-    help="Optional suffix of slave file found within the device folde. "
+    help="Optional suffix of slave file found within the device folder. "
     + "Used as kwarg to ``find_device``. Ignored if device is provided.",
+)
+parser.add_argument(
+    "--no-strict", action="store_true", help="Turn off the stict reading handler."
+)
+parser.add_argument(
+    "--max-delta",
+    type=float,
+    help="Option for maximum delta bertween consecutive readings. "
+    + "Ignored if --no-strict.",
 )
 
 
 def main():
     """Print the temperature to the console."""
     args = parser.parse_args()
-    kwargs = {k: v for k, v in vars(args).items() if v is not None}
-    temp = thermometer.temperature(**kwargs)
-    print(temp)
+    kwargs = {
+        k: v
+        for k, v in vars(args).items()
+        if v is not None and k not in ("no_strict", "max_delta")
+    }
+
+    # add max delta if strict and specified.
+    if not args.no_strict and args.max_delta is not None:
+        kwargs["max_delta"] = args.max_delta
+
+    f = thermometer.temperature if args.no_strict else thermometer.temperature_strict
+
+    temp = f(**kwargs)
+    return temp
 
 
 if __name__ == "__main__":
-    main()
+    print(main())

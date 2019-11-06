@@ -1,9 +1,11 @@
 """Test the module."""
+import argparse
 from pathlib import Path
 
 import pytest
 
 import thermometer
+from thermometer import cli
 
 
 @pytest.mark.parametrize(
@@ -73,3 +75,37 @@ def test_temperature_invalid_data(monkeypatch):
     monkeypatch.setattr(Path, "read_text", lambda *x: "")
     with pytest.raises(thermometer.UnexpectedDeviceData):
         thermometer.temperature(Path("device"), retries=0)
+
+
+def test_temperature_strict(monkeypatch):
+    """Test that the correct temperature is returned with valid data."""
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)
+    assert thermometer.temperature_strict(Path("device"), unit="C") == 0
+
+
+def test_temperature_strict_variable(monkeypatch):
+    """Test that an exception is raised if a variable temperature is read."""
+    L = [0, 1, 0, 1, 0, 1]
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: L.pop())
+    with pytest.raises(thermometer.InconsistentTemperature):
+        thermometer.temperature_strict(retries=1)
+
+
+def test_cli(monkeypatch):
+    """Just test that the cli runs."""
+    monkeypatch.setattr(
+        argparse.ArgumentParser,
+        "parse_args",
+        lambda *x: argparse.Namespace(
+            unit=None,
+            device=None,
+            retries=None,
+            device_folder=None,
+            device_suffix=None,
+            no_strict=None,
+            max_delta=None,
+        ),
+    )
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)
+
+    assert cli.main() == 0

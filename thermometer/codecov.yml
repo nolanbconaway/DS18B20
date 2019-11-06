@@ -1,0 +1,4 @@
+ignore:
+  - "test"
+  - "./setup.py"
+  - .venv/

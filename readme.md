@@ -31,6 +31,12 @@ temp_c = thermometer.temperature(unit='C')
 
 Under the hood, `thermometer` identified your thermometer device, then parsed and validated its output.
 
+My thermometer occasionally generates highly variable temperature measurements, like shooting from 75F to 95F in a minute. I have included a strict reading function which first finds two consistent readings that are similar:
+
+``` python
+temp_f = thermometer.temperature_strict(max_delta=0.1)
+```
+
 ## CLI
 
 The `temperature` command line tool is also installed. Use it like:
@@ -48,7 +54,7 @@ Print the current temperature.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -u {F,C}, --unit {F,C}
+  -u {C,F}, --unit {C,F}
                         Celsius or Fahrenheit choice. Default Fahrenheit.
   -d DEVICE, --device DEVICE
                         Optional path to the thermometer device. Will attempt
@@ -57,11 +63,16 @@ optional arguments:
                         Number of read attempts (in case data are not as
                         expected). Default 20.
   --device-folder DEVICE_FOLDER
-                        Path to the system bus devices. Used as kwarg to find_device().
-                        Ignored if device is provided.
+                        Optional path to the system bus devices. Used as kwarg
+                        to find_device. Ignored if device is provided.
   --device-suffix DEVICE_SUFFIX
-                        Suffix of slave file found within the device folde.
-                        Used as kwarg to find_device(). Ignored if device is provided.
+                        Optional suffix of slave file found within the device
+                        folder. Used as kwarg to find_device. Ignored if
+                        device is provided.
+  --no-strict           Turn off the stict reading handler.
+  --max-delta MAX_DELTA
+                        Option for maximum delta bertween consecutive
+                        readings. Ignored if --no-strict.
 ```
 
 This can be useful for one-liners to record the temperature in e.g., a cron job--

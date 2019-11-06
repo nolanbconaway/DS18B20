@@ -22,6 +22,12 @@ class UnexpectedDeviceData(Exception):
     pass
 
 
+class InconsistentTemperature(Exception):
+    """Raised when the consecutive reads are very different."""
+
+    pass
+
+
 def find_device(
     device_folder: Path = DEVICE_FOLDER, device_suffix: str = DEVICE_SUFFIX
 ) -> Path:
@@ -74,7 +80,7 @@ def convert_raw_temp(raw: int, unit: str = "F") -> float:
 def temperature(
     device: Path = None, unit: str = "F", retries: int = 20, **find_device_kw
 ) -> float:
-    """Read the temperature off of a device robustly.
+    """Read the temperature off of a device.
 
     This is a wrapper around some of the elemental functions in this module, including
     ``find_device``, ``temperature_raw``, and ``convert_raw_temp``.
@@ -100,3 +106,48 @@ def temperature(
             time.sleep(WAIT_INTERVAL)
 
         attempts += 1
+
+
+def temperature_strict(
+    device: Path = None,
+    unit: str = "F",
+    retries: int = 20,
+    max_delta: float = 0.1,
+    **find_device_kw
+):
+    """Read the temperature off of a device strictly.
+
+    This function is exactly the same as ``temperature`` except that it includes a 
+    requirement that a similar temperature was obtained in consecutive readings.
+
+    :param device: Path to the device. If not provided, ``find_device()`` is used.
+    :param unit: Unit of temperature to return, either F or C. Default F.
+    :param retries: Number of times to retry reading on failure. Set to -1 for infinite. 
+    Default 20.
+    :param max_delta: Maximum allowable difference in value between consecutive reads.
+    timeout between attempts. Set to -1 for infinite. Default 20.
+    :return: Temperature in unit specified by the user.
+    """
+    # function to read the device and get the temperature.
+    def f():
+        return temperature(device=device, unit=unit, retries=retries, **find_device_kw)
+
+    attempts = 0
+    t1 = f()
+
+    while True:
+
+        # get a new reading and compare. return if consistent
+        t2 = f()
+        if abs(t2 - t1) <= max_delta:
+            return t2
+
+        # stop looping if out of retries
+        if attempts == retries:
+            break
+
+        # replace first temp with second
+        t1 = t2
+        attempts += 1
+
+    raise InconsistentTemperature("Did not obtain two consistent readings.")

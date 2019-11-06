@@ -12,7 +12,7 @@ if sys.version_info.minor > 5:
 
 setup(
     name="thermometer",
-    version="0.2",
+    version="0.2.1",
     packages=["thermometer"],
     python_requires=">=3.5",
     extras_require={"test": TEST_DEPS},

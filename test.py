@@ -3,7 +3,6 @@ import argparse
 from pathlib import Path
 
 import pytest
-
 import thermometer
 from thermometer import cli
 
@@ -108,4 +107,4 @@ def test_cli(monkeypatch):
     )
     monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)
 
-    assert cli.main() == 0
+    cli.main()

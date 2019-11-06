@@ -71,7 +71,6 @@ def main():
     temp = f(**kwargs)
 
     print(temp)
-    return temp
 
 
 if __name__ == "__main__":

@@ -35,7 +35,7 @@ My thermometer occasionally generates highly variable temperature measurements, 
 of multiple samples from the device and raises an error if the measurements are too variable.
 
 ```python
-temp_f = thermometer.temperature_strict(max_delta=0.1)
+temp_f = thermometer.temperature_strict(unit='F', samples=10, max_iqr=0.5)
 ```
 
 ## CLI

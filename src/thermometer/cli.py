@@ -5,7 +5,7 @@ This is a command line tool, so run it like `python3 -m thermometer.now`.
 import argparse
 from pathlib import Path
 
-import thermometer
+from . import temperature, temperature_strict
 
 # make the parser
 parser = argparse.ArgumentParser(description="Print the current temperature.")
@@ -46,10 +46,16 @@ parser.add_argument(
     "--no-strict", action="store_true", help="Turn off the strict reading handler."
 )
 parser.add_argument(
-    "--max-delta",
+    "--max-iqr",
     type=float,
-    help="Option for maximum delta between consecutive readings. "
+    help="Maximum interquartile range allowable in a strict reading. "
     + "Ignored if --no-strict.",
+)
+parser.add_argument(
+    "--samples",
+    type=int,
+    default=10,
+    help="Number of samples to take for strict reading. Ignored if --no-strict.",
 )
 
 
@@ -59,14 +65,17 @@ def main():
     kwargs = {
         k: v
         for k, v in vars(args).items()
-        if v is not None and k not in ("no_strict", "max_delta")
+        if v is not None and k not in ("no_strict", "max_iqr", "samples")
     }
 
     # add max delta if strict and specified.
-    if not args.no_strict and args.max_delta is not None:
-        kwargs["max_delta"] = args.max_delta
+    if not args.no_strict:
+        if args.max_iqr is not None:
+            kwargs["max_iqr"] = args.max_iqr
+        if args.samples is not None:
+            kwargs["samples"] = args.samples
 
-    f = thermometer.temperature if args.no_strict else thermometer.temperature_strict
+    f = temperature if args.no_strict else temperature_strict
 
     temp = f(**kwargs)
 

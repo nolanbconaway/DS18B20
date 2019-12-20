@@ -12,3 +12,8 @@ venv/
 .venv/
 .env
 .vscode
+.python-version
+*.egg-info
+.tox
+build
+dist

@@ -1,8 +1,10 @@
 """Test the module."""
 import argparse
+import statistics
 from pathlib import Path
 
 import pytest
+
 import thermometer
 from thermometer import cli
 
@@ -76,18 +78,46 @@ def test_temperature_invalid_data(monkeypatch):
         thermometer.temperature(Path("device"), retries=0)
 
 
+def test_sample_temperature(monkeypatch):
+    """Test the sampler."""
+    L = [0, 1, 0, 1, 0]
+    expected = tuple(L)
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: L.pop())
+    samples = thermometer.sample_temperature(samples=5)
+    assert samples == expected
+
+
+def test_quantiles():
+    """Test the quantiles function.
+    
+    I know this works bc its base lib but coverage y'know?
+    """
+    assert thermometer.quantiles([1, 2, 3]) == [1, 2, 3]
+
+    with pytest.raises(statistics.StatisticsError):
+        thermometer.quantiles([1, 2, 3], n=0)
+
+    with pytest.raises(statistics.StatisticsError):
+        thermometer.quantiles([1])
+
+
 def test_temperature_strict(monkeypatch):
     """Test that the correct temperature is returned with valid data."""
-    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)
-    assert thermometer.temperature_strict(Path("device"), unit="C") == 0
+    L = [70.0, 70.0, 70.1, 70.1, 70.2, 70.2]
+    monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: L.pop())
+    assert thermometer.temperature_strict(samples=6) == 70.1
 
 
 def test_temperature_strict_variable(monkeypatch):
     """Test that an exception is raised if a variable temperature is read."""
-    L = [0, 1, 0, 1, 0, 1]
+    L = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
     monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: L.pop())
     with pytest.raises(thermometer.InconsistentTemperature):
-        thermometer.temperature_strict(retries=1)
+        thermometer.temperature_strict(retries=1, samples=3)
+
+    # should be fine if you increase the max iqr
+    L = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+    thermometer.temperature_strict(retries=1, samples=3, max_iqr=10)
 
 
 def test_cli(monkeypatch):
@@ -102,7 +132,8 @@ def test_cli(monkeypatch):
             device_folder=None,
             device_suffix=None,
             no_strict=None,
-            max_delta=None,
+            max_iqr=None,
+            samples=None,
         ),
     )
     monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)

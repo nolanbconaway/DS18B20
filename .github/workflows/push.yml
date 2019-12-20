@@ -25,11 +25,11 @@ jobs:
           pip install .[test]
 
       - name: Check Documentation with Pydocstyle
-        run: pydocstyle thermometer/* test.py --verbose
+        run: pydocstyle src/thermometer/* test.py --verbose
 
       - name: Lint with Black if > 3.5
         if: matrix.python-version > 3.5
-        run: black ./thermometer/ test.py --check --verbose
+        run: black src/thermometer/ test.py --check --verbose
 
       - name: Run unit tests with Pytest
         run: pytest test.py --verbose --cov=./ --cov-report=xml

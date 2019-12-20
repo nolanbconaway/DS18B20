@@ -184,4 +184,4 @@ def temperature_strict(
 
         attempts += 1
 
-    raise InconsistentTemperature("Did not obtain two consistent readings.")
+    raise InconsistentTemperature("Did not obtain consistent readings.")

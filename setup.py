@@ -13,7 +13,7 @@ if sys.version_info.minor > 5:
 
 setup(
     name="thermometer",
-    version="0.2.1",
+    version="0.3.0",
     package_dir={"": "src"},
     packages=["thermometer"],
     python_requires=">=3.5",

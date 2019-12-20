@@ -1,5 +1,6 @@
 """Set up the thermometer module."""
 import sys
+from pathlib import Path
 
 from setuptools import setup
 
@@ -13,6 +14,7 @@ if sys.version_info.minor > 5:
 setup(
     name="thermometer",
     version="0.2.1",
+    package_dir={"": "src"},
     packages=["thermometer"],
     python_requires=">=3.5",
     extras_require={"test": TEST_DEPS},

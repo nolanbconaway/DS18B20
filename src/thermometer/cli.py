@@ -5,7 +5,7 @@ This is a command line tool, so run it like `python3 -m thermometer.now`.
 import argparse
 from pathlib import Path
 
-import thermometer
+from . import temperature, temperature_strict
 
 # make the parser
 parser = argparse.ArgumentParser(description="Print the current temperature.")
@@ -75,7 +75,7 @@ def main():
         if args.samples is not None:
             kwargs["samples"] = args.samples
 
-    f = thermometer.temperature if args.no_strict else thermometer.temperature_strict
+    f = temperature if args.no_strict else temperature_strict
 
     temp = f(**kwargs)
 

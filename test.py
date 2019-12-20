@@ -132,7 +132,8 @@ def test_cli(monkeypatch):
             device_folder=None,
             device_suffix=None,
             no_strict=None,
-            max_delta=None,
+            max_iqr=None,
+            samples=None,
         ),
     )
     monkeypatch.setattr(thermometer, "temperature", lambda *x, **k: 0)

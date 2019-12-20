@@ -154,7 +154,7 @@ def quantiles(data, n=4):
 
 
 def temperature_strict(
-    retries: int = 20, samples: int = 10, max_iqr: float = 0.5, **kwargs,
+    retries: int = 20, samples: int = 10, max_iqr: float = 0.5, **kwargs
 ):
     """Read the temperature off of a device strictly.
 

@@ -1,5 +1,6 @@
 """Utils to read temperatures off of a raspberry pi thermometer."""
 
+import statistics
 import time
 import typing
 from pathlib import Path
@@ -108,46 +109,79 @@ def temperature(
         attempts += 1
 
 
+def sample_temperature(*args, samples: int = 10, **kwargs) -> typing.Tuple[float]:
+    """Return a tuple of temperature samples from the device.
+    
+    With the exception of ``samples``, all args and kwargs are passed directly to 
+    ``temperature``.
+
+    :param samples: Number of samples to take. Default 10.
+    """
+    return tuple(temperature(*args, **kwargs) for i in range(samples))
+
+
+# Literal copy from base lib 3.8. i am the worst
+def quantiles(data, n=4):
+    """Divide *data* into *n* continuous intervals with equal probability.
+
+    Returns a list of (n - 1) cut points separating the intervals.
+
+    Set *n* to 4 for quartiles (the default).  Set *n* to 10 for deciles.
+    Set *n* to 100 for percentiles which gives the 99 cuts points that
+    separate *data* in to 100 equal sized groups.
+
+    The *data* can be any iterable containing sample.
+    The cut points are linearly interpolated between data points.
+    """
+    if n < 1:
+        raise statistics.StatisticsError("n must be at least 1")
+
+    data = sorted(data)
+    ld = len(data)
+
+    if ld < 2:
+        raise statistics.StatisticsError("must have at least two data points")
+
+    m = ld + 1
+    result = []
+    for i in range(1, n):
+        j = i * m // n  # rescale i to m/n
+        j = 1 if j < 1 else ld - 1 if j > ld - 1 else j  # clamp to 1 .. ld-1
+        delta = i * m - j * n  # exact integer math
+        interpolated = (data[j - 1] * (n - delta) + data[j] * delta) / n
+        result.append(interpolated)
+    return result
+
+
 def temperature_strict(
-    device: Path = None,
-    unit: str = "F",
-    retries: int = 20,
-    max_delta: float = 0.25,
-    **find_device_kw
+    retries: int = 20, samples: int = 10, max_iqr: float = 0.5, **kwargs,
 ):
     """Read the temperature off of a device strictly.
 
     This function is exactly the same as ``temperature`` except that it includes a 
-    requirement that a similar temperature was obtained in consecutive readings.
+    requirement that readings are consistent. Multiple samples are read from the device
+    and the reading is consistent if the interquartile range of the observations is 
+    less than or equal to the ``max_iqr`` set. The median of the samples is returned.
 
-    :param device: Path to the device. If not provided, ``find_device()`` is used.
-    :param unit: Unit of temperature to return, either F or C. Default F.
     :param retries: Number of times to retry reading on failure. Set to -1 for infinite. 
     Default 20.
-    :param max_delta: Maximum allowable difference in value between consecutive reads.
-    timeout between attempts. Set to -1 for infinite. Default 20.
-    :return: Temperature in unit specified by the user.
+    :param samples: Number of samples to take at each attempt. Default 10.
+    :param max_iqr: Maximum allowable interquartile range. Default 0.5.
     """
-    # function to read the device and get the temperature.
-    def f():
-        return temperature(device=device, unit=unit, retries=retries, **find_device_kw)
-
     attempts = 0
-    t1 = f()
-
     while True:
+        readings = sample_temperature(samples=samples, retries=retries, **kwargs)
 
-        # get a new reading and compare. return if consistent
-        t2 = f()
-        if abs(t2 - t1) <= max_delta:
-            return t2
+        qs = quantiles(readings)
+        iqr = qs[-1] - qs[0]
+
+        if iqr <= max_iqr:
+            return statistics.median(readings)
 
         # stop looping if out of retries
         if attempts == retries:
             break
 
-        # replace first temp with second
-        t1 = t2
         attempts += 1
 
     raise InconsistentTemperature("Did not obtain two consistent readings.")

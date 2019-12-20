@@ -15,3 +15,5 @@ venv/
 .python-version
 *.egg-info
 .tox
+build
+dist

@@ -30,7 +30,8 @@ jobs:
 
       - name: Lint with Black if > 3.5
         if: matrix.python-version > 3.5
-        run: pip install black
+        run: |
+          pip install black
           black src/thermometer/ test.py --check --verbose
 
       - name: Run unit tests with Pytest

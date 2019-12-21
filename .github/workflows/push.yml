@@ -32,7 +32,7 @@ jobs:
         run: black src/thermometer/ test.py --check --verbose
 
       - name: Run unit tests with Pytest
-        run: pytest test.py --verbose --cov=./ --cov-report=xml
+        run: pytest test.py --verbose --cov=./ --cov-report=xml --cov-config=.coveragerc
 
       - name: Check that the temperature CLT is installed
         run: command -v temperature

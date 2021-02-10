@@ -35,14 +35,7 @@ jobs:
           black src/thermometer/ test.py --check --verbose
 
       - name: Run unit tests with Pytest
-        run: pytest test.py --verbose --cov=./ --cov-report=xml
+        run: pytest test.py --verbose
 
       - name: Check that the temperature CLT is installed
         run: command -v temperature
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.2
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          name: ${{matrix.python-version}}
-          file: ./coverage.xml

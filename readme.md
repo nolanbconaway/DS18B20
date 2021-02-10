@@ -2,9 +2,6 @@
 
 > **2020-02-10**: My DS18B20 busted and I started using a DHT22, so this repo is no longer under development.
 
-[![badge](https://github.com/nolanbconaway/DS18B20/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/DS18B20/actions)
-[![codecov](https://codecov.io/gh/nolanbconaway/DS18B20/branch/master/graph/badge.svg)](https://codecov.io/gh/nolanbconaway/DS18B20)
-
 This is a python module for reading temperatures from a raspberry pi thermometer. It is tested on python 3.5-3.8 and has zero dependencies.
 
 This will be useful to those who followed a tutorial for setting up a DS18B20 temperature sensor, [like this one](https://www.hackster.io/timfernando/a-raspberry-pi-thermometer-you-can-access-anywhere-33061c).

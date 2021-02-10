@@ -1,7 +1,9 @@
-# thermometer
+# DS18B20 Thermometer
 
-[![badge](https://github.com/nolanbconaway/thermometer/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/thermometer/actions)
-[![codecov](https://codecov.io/gh/nolanbconaway/thermometer/branch/master/graph/badge.svg)](https://codecov.io/gh/nolanbconaway/thermometer)
+> **2020-02-10**: My DS18B20 busted and I started using a DHT22, so this repo is no longer under development.
+
+[![badge](https://github.com/nolanbconaway/DS18B20/workflows/Main%20Workflow/badge.svg)](https://github.com/nolanbconaway/DS18B20/actions)
+[![codecov](https://codecov.io/gh/nolanbconaway/DS18B20/branch/master/graph/badge.svg)](https://codecov.io/gh/nolanbconaway/DS18B20)
 
 This is a python module for reading temperatures from a raspberry pi thermometer. It is tested on python 3.5-3.8 and has zero dependencies.
 
@@ -12,7 +14,7 @@ This will be useful to those who followed a tutorial for setting up a DS18B20 te
 After you've installed your python 3.5+ environment with pip, run:
 
 ```sh
-pip3 install git+https://github.com/nolanbconaway/thermometer.git
+pip3 install git+https://github.com/nolanbconaway/DS18B20.git
 ```
 
 ## Python API
